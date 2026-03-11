@@ -9,7 +9,7 @@ import contractsRouter from '../src/modules/contracts/contracts.router';
 const corsOptions: cors.CorsOptions = {
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'ngrok-skip-browser-warning'],
 };
 
 const app = express();
