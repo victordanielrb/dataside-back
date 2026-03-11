@@ -3,6 +3,11 @@ import jwt from 'jsonwebtoken';
 import { env } from '../config/env';
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
+  if (!env.JWT_SECRET) {
+    res.status(500).json({ error: 'JWT auth is not configured' });
+    return;
+  }
+
   const header = req.headers.authorization;
   if (!header?.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Missing token' });

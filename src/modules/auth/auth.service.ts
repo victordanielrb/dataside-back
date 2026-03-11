@@ -17,6 +17,10 @@ export async function login(email: string, password: string) {
 
   const id = (user._id as { toString(): string }).toString();
 
+  if (!env.JWT_SECRET) {
+    throw new Error('JWT auth is not configured');
+  }
+
   const token = jwt.sign(
     { sub: id, email: user.email },
     env.JWT_SECRET,
