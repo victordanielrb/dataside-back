@@ -25,9 +25,23 @@ app.use(errorHandler);
 let isConnected = false;
 
 export default async function handler(req: any, res: any) {
-  if (!isConnected) {
-    await mongoose.connect(env.MONGODB_URI);
-    isConnected = true;
+  res.setHeader('Access-Control-Allow-Origin', 'https://dataside-front.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key, ngrok-skip-browser-warning');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
   }
+
+  try {
+    if (!isConnected) {
+      await mongoose.connect(env.MONGODB_URI);
+      isConnected = true;
+    }
+  } catch (err) {
+    console.error('DB connection failed:', err);
+    return res.status(503).json({ message: 'Database unavailable' });
+  }
+
   return app(req, res);
 }
