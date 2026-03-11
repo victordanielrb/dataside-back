@@ -6,7 +6,7 @@ import authRouter from './modules/auth/auth.router';
 import contractsRouter from './modules/contracts/contracts.router';
 
 const corsOptions: cors.CorsOptions = {
-  origin: 'https://dataside-front.vercel.app',
+  origin: 'https://dataside-front.vercel.app,*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'ngrok-skip-browser-warning'],
 };
