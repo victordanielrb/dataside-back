@@ -5,7 +5,7 @@ const schema = z.object({
   PORT: z.string().default('3001'),
   MONGODB_URI: z.string().min(1),
   JWT_SECRET: z.string().min(32).optional(),
-  EXPIRING_SOON_API_KEY: z.string().min(16),
+  EXPIRING_SOON_API_KEY: z.string().min(1).optional(),
   FRONTEND_URL: z.string().url().optional(),
 });
 
