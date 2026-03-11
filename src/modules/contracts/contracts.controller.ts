@@ -73,8 +73,8 @@ export async function deleteContract(req: Request, res: Response, next: NextFunc
 
 export async function getExpiringSoon(req: Request, res: Response, next: NextFunction) {
   try {
-    const data = await service.getExpiringSoon();
-    res.json({ data });
+    const result = await service.getExpiringSoon();
+    res.json(result);
   } catch (err) {
     next(err);
   }

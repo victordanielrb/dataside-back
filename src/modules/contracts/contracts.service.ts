@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Contract } from '../../models/Contract';
+import { AdminUser } from '../../models/AdminUser';
 import { ContractBody, ContractFilters } from './contracts.schema';
 
 export async function listContracts(filters: ContractFilters) {
@@ -47,13 +48,19 @@ export async function getExpiringSoon() {
   const today = new Date().toISOString().split('T')[0];
   const inFiveDays = new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0];
 
-  const data = await Contract.find({
-    data_vencimento: { $gte: today, $lte: inFiveDays },
-  })
-    .sort({ data_vencimento: 1 })
-    .lean({ virtuals: true });
+  const [contracts, admins] = await Promise.all([
+    Contract.find({
+      data_vencimento: { $gte: today, $lte: inFiveDays },
+    })
+      .sort({ data_vencimento: 1 })
+      .lean({ virtuals: true }),
+    AdminUser.find({}, 'email').lean(),
+  ]);
 
-  return data.map(toContract);
+  return {
+    data: contracts.map(toContract),
+    adminEmails: admins.map((a) => a.email as string),
+  };
 }
 
 // Normalize _id → id for API responses
