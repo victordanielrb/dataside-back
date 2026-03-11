@@ -5,10 +5,18 @@ import { errorHandler } from './middleware/errorHandler';
 import authRouter from './modules/auth/auth.router';
 import contractsRouter from './modules/contracts/contracts.router';
 
+const corsOptions: cors.CorsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key'],
+};
+
 export function createApp() {
   const app = express();
 
-  app.use(cors({ origin: "*" }));
+  // Handle OPTIONS preflight explicitly before all other middleware
+  app.options('*', cors(corsOptions));
+  app.use(cors(corsOptions));
   app.use(express.json());
 
   app.use('/api/auth', authRouter);
